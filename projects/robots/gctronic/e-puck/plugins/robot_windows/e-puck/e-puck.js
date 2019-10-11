@@ -19,8 +19,8 @@ window.onload = function() {
       }
       robotLayout(configure);
     } else if (value.indexOf('ports') === 0) {
-      //updatePortsMenu(document.getElementById('mode'), value);
-      //updatePortsMenu(document.getElementById('upload'), value);
+      updatePortsMenu(document.getElementById('ports'), value);
+      updatePortsMenu(document.getElementById('ports'), value);
     } else if (value.startsWith('upload ')) {
       var uploadCommand = value.substring(7);
       var progressBar = document.getElementById('uploadProgressBar');
@@ -111,11 +111,11 @@ function updatePortsMenu(menu, value) {
     a.setAttribute('name', values[i]);
     menu.appendChild(a);
   }
-  a = document.createElement('A');
+  /*a = document.createElement('A');
   a.innerHTML = 'Refresh';
   a.href = '#';
   a.setAttribute('name', 'refresh');
-  menu.appendChild(a);
+  menu.appendChild(a);*/
 }
 
 // Close the dropdown if the user clicks outside of it
