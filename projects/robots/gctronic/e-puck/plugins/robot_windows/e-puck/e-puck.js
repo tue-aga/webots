@@ -44,30 +44,15 @@ window.onload = function() {
       }
     } else { // sensor values
       var values = value.split(' ');
-      document.getElementById('ps0').innerHTML = values[0];
-      document.getElementById('ps1').innerHTML = values[1];
-      document.getElementById('ps2').innerHTML = values[2];
-      document.getElementById('ps3').innerHTML = values[3];
-      document.getElementById('ps4').innerHTML = values[4];
-      document.getElementById('ps5').innerHTML = values[5];
-      document.getElementById('ps6').innerHTML = values[6];
-      document.getElementById('ps7').innerHTML = values[7];
-      document.getElementById('ls0').innerHTML = values[8];
-      document.getElementById('ls1').innerHTML = values[9];
-      document.getElementById('ls2').innerHTML = values[10];
-      document.getElementById('ls3').innerHTML = values[11];
-      document.getElementById('ls4').innerHTML = values[12];
-      document.getElementById('ls5').innerHTML = values[13];
-      document.getElementById('ls6').innerHTML = values[14];
-      document.getElementById('ls7').innerHTML = values[15];
-      document.getElementById('tof').innerHTML = values[16];
-      document.getElementById('left speed').innerHTML = values[17];
-      document.getElementById('right speed').innerHTML = values[18];
+      var ids = ['ps0', 'ps1', 'ps2', 'ps3', 'ps4', 'ps5', 'ps6', 'ps7',
+                 'ls0', 'ls1', 'ls2', 'ls3', 'ls4', 'ls5', 'ls6', 'ls7',
+                 'tof', 'left speed', 'right speed',
+                 'left wheel position', 'right wheel position',
+                 'accelerometer x', 'accelerometer y', 'accelerometer z']
+      for (let i = 0; i < 24; i++)
+        document.getElementById(ids[i]).innerHTML = values[i];
       document.getElementById('left wheel position').innerHTML = values[19].replace(/_/g, ' ');
       document.getElementById('right wheel position').innerHTML = values[20].replace(/_/g, ' ');
-      document.getElementById('accelerometer x').innerHTML = values[21];
-      document.getElementById('accelerometer y').innerHTML = values[22];
-      document.getElementById('accelerometer z').innerHTML = values[23];
       document.getElementById('camera').src = values[24] + '#' + new Date().getTime();
       if (values.length > 25) {
         // optional ground sensors available
