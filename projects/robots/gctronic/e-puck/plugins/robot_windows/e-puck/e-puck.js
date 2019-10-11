@@ -19,8 +19,8 @@ window.onload = function() {
       }
       robotLayout(configure);
     } else if (value.indexOf('ports') === 0) {
-      updateDropDownMenu(document.getElementById('mode'), value);
-      updateDropDownMenu(document.getElementById('upload'), value);
+      //updatePortsMenu(document.getElementById('mode'), value);
+      //updatePortsMenu(document.getElementById('upload'), value);
     } else if (value.startsWith('upload ')) {
       var uploadCommand = value.substring(7);
       var progressBar = document.getElementById('uploadProgressBar');
@@ -96,7 +96,7 @@ function setGroundSensorValue(id, valueString) {
   }
 }
 
-function updateDropDownMenu(menu, value) {
+function updatePortsMenu(menu, value) {
   var values = value.split(' ');
   while (menu.childNodes.length)
     menu.removeChild(menu.firstChild);
@@ -210,11 +210,12 @@ function robotLayout(configure) {
 
     var tof = document.getElementById('tof');
     tof.style.visibility = 'visible';
+
+    var mode = document.getElementById('mode');
+    mode.children[1].style.display = 'block'; // enable Wi-Fi
   } else { // first e-puck: use Bluetooth communication only
     var uploadButton = document.getElementById('upload hex');
     uploadButton.style.visibility = 'visible';
-    var simulationButton = document.getElementById('simulation');
-    simulationButton.style.visibility = 'visible';
 
     var image = document.getElementById('robot image');
     image.src = 'images/e-puck.png';

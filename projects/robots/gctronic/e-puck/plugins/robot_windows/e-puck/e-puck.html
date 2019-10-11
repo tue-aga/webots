@@ -34,9 +34,13 @@
     <div id="upload-button" onclick="dropDownMenu('upload')" class="dropdown-button">Upload HEX... &#x25BC;</div>
     <div id="upload" class="dropdown-content"><a href="#" name="refresh">Refresh</a></div>
   </div>
-  <div id="simulation" class="dropdown" style="margin-left:-300px;margin-top:1px;visibility:hidden">
+  <div id="simulation" class="dropdown" style="margin-left:-300px;margin-top:1px">
     <div id="mode-button" name="simulation" onclick="dropDownMenu('mode')" class="dropdown-button">Simulation &#x25BC;</div>
-    <div id="mode" class="dropdown-content"><a href="#" name="refresh">Refresh</a></div>
+    <div id="mode" class="dropdown-content">
+      <a href="#" name="simulation">Simulation</a>
+      <a href="#" name="wifi" style="display:none;">Wi-Fi...</a>
+      <a href="#" name="bluetooth">Bluetooth...</a>
+    </div>
   </div>
   <input id="ip address" style="margin-left:55px;visibility:hidden" placeholder="Enter IP address"><br>
   <button id="connect" style="margin-left:54px;margin-top:22px;visibility:hidden" onclick="wifiConnect()">connect</button>
