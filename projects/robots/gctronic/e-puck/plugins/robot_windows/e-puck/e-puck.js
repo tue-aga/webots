@@ -8,7 +8,16 @@ window.onload = function() {
   var progressBar = document.getElementById('uploadProgressBar');
   progressBar.style.visibility = 'hidden';
 
-  window.robotWindow = webots.window('e-puck');
+  // TODO DEBUG
+  if (typeof webots === "undefined") {
+    window.robotWindow = {};
+    window.robotWindow.send = function(msg) {
+      console.log("sending: " + msg);
+    };
+    window.robotWindow.setTitle = function() {};
+  } else
+    window.robotWindow = webots.window('e-puck');
+  
   window.robotWindow.receive = function(value, robot) {
     if (value.indexOf('configure ') === 0) {
       try {
@@ -17,6 +26,8 @@ window.onload = function() {
         console.log(e);
         console.log('In: ' + value);
       }
+      if (typeof webots === "undefined")
+        configure.model = 'GCtronic e-puck2';  // TODO DEBUG
       robotLayout(configure);
     } else if (value.indexOf('ports') === 0) {
       updatePortsMenu(document.getElementById('ports'), value);
@@ -62,7 +73,14 @@ window.onload = function() {
       }
     }
   };
+
   window.robotWindow.send('configure');
+
+  // TODO DEBUG
+  if (typeof webots === "undefined") {
+    window.robotWindow.receive('configure {}', 0);  // TODO DEBUG
+  }
+
   document.getElementById('file-selector').onchange = function(e) {
     var filename = e.target.files[0].name;
     if (filename.lastIndexOf('.hex') !== filename.length - 4) {
@@ -121,7 +139,83 @@ function updatePortsMenu(menu, value) {
 // Close the dropdown if the user clicks outside of it
 var selectedPort = 'simulation';
 
-window.onclick = function(event) {
+// on page load
+$(function() {
+  $('.background').on('click', function() {
+    hideAllDropDownMenus();
+  });
+    
+  $('.dropdown-button').on('click', function() {
+    hideAllDropDownMenus();
+    let dropdown = $(this).parent().children('.dropdown-content')[0];
+    $(dropdown).show();
+    return false;
+  });
+
+  // simulation
+  $('#simulation-button').on('click', function() {
+    hideAllDropDownMenus();
+    wifiDisconnect();
+  });
+  
+  // Wi-Fi
+  $('#wifi-button').on('click', function() {
+    hideAllDropDownMenus();
+    showModal('#wifi-modal');
+  });
+  $('#wifi-connect-button').on('click', function() {
+    hideAllDropDownMenus();
+    hideModal();
+    wifiConnect();
+  });
+  
+  // Bluetooth
+  $('#bluetooth-button').on('click', function() {
+    hideAllDropDownMenus();
+    showModal('#bluetooth-modal');
+  });
+  $('#bluetooth-connect-button').on('click', function() {
+    hideAllDropDownMenus();
+    hideModal();
+    bluetoothConnect();
+  });
+  
+  $('.dropdown-menu').on('click', function() {
+    return false;
+  });
+  
+  $('.backdrop').on('click', function() {
+    hideModal();
+  });
+});
+
+function wifiConnect() {
+  let ip = $('#wifi-ip-field').val();
+  window.robotWindow.send('connect ' + ip);
+  $('#mode-button').text('Wi-Fi (' + ip + ') \u25BC');
+}
+
+function wifiDisconnect() {
+  window.robotWindow.send('disconnect');
+  $('#mode-button').text('Simulation \u25BC');
+}
+
+function hideAllDropDownMenus() {
+  $('.dropdown-content').hide();
+}
+
+function showModal(modal) {
+  hideModal();
+  $('.backdrop').show();
+  $(modal).show();
+}
+
+function hideModal() {
+  $('.backdrop').hide();
+  $('.modal').hide();
+}
+
+/*window.onclick = function(event) {
   if (!event.target.classList.contains('dropdown-button'))
     hideAllDropDownMenus();
   if (event.target.nodeName === 'A') {
@@ -162,49 +256,20 @@ window.onclick = function(event) {
     if (action)
       window.robotWindow.send(action);
   }
-};
+};*/
 
-function hideAllDropDownMenus() {
-  var dropdowns = document.getElementsByClassName('dropdown-content');
-  var i;
-  for (i = 0; i < dropdowns.length; i++) {
-    var openDropdown = dropdowns[i];
-    if (openDropdown.classList.contains('show'))
-      openDropdown.classList.remove('show');
-  }
-}
-
-function dropDownMenu(id) {
+/*function dropDownMenu(id) {
   hideAllDropDownMenus();
   if (selectedPort === 'remote control' && id === 'upload') {
     console.log('Please revert to simulation before uploading HEX to the e-puck robot.');
     return;
   }
   document.getElementById(id).classList.toggle('show');
-}
-
-function wifiConnect() {
-  var button = document.getElementById('connect');
-  button.innerHTML = 'disconnect';
-  button.onclick = wifiDisconnect;
-  window.robotWindow.send('connect ' + document.getElementById('ip address').value);
-}
-
-function wifiDisconnect() {
-  var button = document.getElementById('connect');
-  button.innerHTML = 'connect';
-  button.onclick = wifiConnect;
-  window.robotWindow.send('disconnect');
-}
+}*/
 
 function robotLayout(configure) {
   window.robotWindow.setTitle('Robot: ' + configure.name, configure.name);
   if (configure.model === 'GCtronic e-puck2') { // e-puck2: Wifi remote control only
-    var ipAddress = document.getElementById('ip address');
-    ipAddress.style.visibility = 'visible';
-    var connect = document.getElementById('connect');
-    connect.style.visibility = 'visible';
-
     var image = document.getElementById('robot image');
     image.src = 'images/e-puck2.png';
 

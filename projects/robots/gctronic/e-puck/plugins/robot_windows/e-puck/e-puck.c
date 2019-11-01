@@ -202,7 +202,7 @@ void wb_robot_window_step(int time_step) {
       sprintf(full_path, "%s%s", path, filename);
       FILE *fd = fopen(full_path, "wb");
       if (fd == NULL)
-        fprintf(stderr, "Cannot open %s for writting\n", full_path);
+        fprintf(stderr, "Cannot open %s for writing\n", full_path);
       else {
         fwrite(data, 1, strlen(data), fd);
         fclose(fd);
